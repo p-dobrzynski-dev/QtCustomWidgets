@@ -17,7 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     batterywidget.cpp \
-    main.cpp \
+    mainApp.cpp \
     mainwindow.cpp \
     tachometerwidget.cpp
 
