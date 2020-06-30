@@ -23,7 +23,7 @@ private:
     QFont textFont = QFont();
 
     void paintEvent(QPaintEvent *);
-    void resizeEvent(QResizeEvent *event);
+    void resizeEvent(QResizeEvent *);
     QPointF getWidgetFrameOffset(QSizeF);
 
 public slots:
