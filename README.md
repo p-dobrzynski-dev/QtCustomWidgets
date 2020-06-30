@@ -7,7 +7,9 @@ Such as:
 * Tachometer
 * Battery percentage
 
-<img src="/gifs/capture.gif" />
+<p align="center">
+  <img src="/gifs/capture.gif" />
+</p>
 
 ## Tachometer
 
