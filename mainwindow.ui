@@ -23,6 +23,9 @@
       <item>
        <widget class="BatteryWidget" name="widget_2" native="true"/>
       </item>
+      <item>
+       <widget class="SevenSegmentClock" name="widget_3" native="true"/>
+      </item>
      </layout>
     </item>
     <item>
@@ -49,6 +52,12 @@
    <class>BatteryWidget</class>
    <extends>QWidget</extends>
    <header>batterywidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>SevenSegmentClock</class>
+   <extends>QWidget</extends>
+   <header>sevensegmentclock.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

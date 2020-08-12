@@ -19,11 +19,13 @@ SOURCES += \
     batterywidget.cpp \
     mainApp.cpp \
     mainwindow.cpp \
+    sevensegmentclock.cpp \
     tachometerwidget.cpp
 
 HEADERS += \
     batterywidget.h \
     mainwindow.h \
+    sevensegmentclock.h \
     tachometerwidget.h
 
 FORMS += \
