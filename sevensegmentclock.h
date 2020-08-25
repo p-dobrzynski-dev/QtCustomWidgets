@@ -14,8 +14,14 @@ private:
     void resizeEvent(QResizeEvent *event);
     QPointF getWidgetFrameOffset(QSizeF);
 
-    QList<QRectF> getSingleSegment(QRectF forRect);
+    int value = 0;
+
+    QList<QRectF> getSingleSegment(QRectF forRect, int number);
     QList<QRectF> calculateRectsForSegments();
+    QList<int> getListOfSingleDigitsFrom(int number);
+
+public slots:
+    void setValue(int);
 
 signals:
 
