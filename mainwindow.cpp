@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <QDebug>
+
 
 MainWindow::MainWindow(QMainWindow *parent)
     : QMainWindow(parent)
@@ -12,6 +14,8 @@ MainWindow::MainWindow(QMainWindow *parent)
     connect (ui->horizontalSlider, SIGNAL(valueChanged (int)), ui->widget, SLOT(setValue(int)));
     connect (ui->horizontalSlider, SIGNAL(valueChanged (int)), ui->widget_2, SLOT(setValue(int)));
     connect (ui->horizontalSlider, SIGNAL(valueChanged (int)), ui->widget_3, SLOT(setValue(int)));
+    connect (ui->doubleSpinBox , SIGNAL(valueChanged(double)), ui->widget_4, SLOT(setXAngle(double)));
+    connect (ui->doubleSpinBox_2 , SIGNAL(valueChanged(double)), ui->widget_4, SLOT(setYAngle(double)));
 }
 
 MainWindow::~MainWindow()

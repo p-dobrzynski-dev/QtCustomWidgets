@@ -29,6 +29,9 @@
       <item>
        <widget class="LevelWidget" name="widget_4" native="true"/>
       </item>
+      <item>
+       <widget class="ThermometerWidget" name="widget_5" native="true"/>
+      </item>
      </layout>
     </item>
     <item>
@@ -40,6 +43,36 @@
        <enum>Qt::Horizontal</enum>
       </property>
      </widget>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QDoubleSpinBox" name="doubleSpinBox">
+        <property name="minimum">
+         <double>-15.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>15.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.500000000000000</double>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
+        <property name="minimum">
+         <double>-15.000000000000000</double>
+        </property>
+        <property name="maximum">
+         <double>15.000000000000000</double>
+        </property>
+        <property name="singleStep">
+         <double>0.500000000000000</double>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>
@@ -67,6 +100,12 @@
    <class>LevelWidget</class>
    <extends>QWidget</extends>
    <header>levelwidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ThermometerWidget</class>
+   <extends>QWidget</extends>
+   <header>thermometerwidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

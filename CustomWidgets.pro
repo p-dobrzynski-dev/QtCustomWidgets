@@ -21,14 +21,16 @@ SOURCES += \
     mainApp.cpp \
     mainwindow.cpp \
     sevensegmentclock.cpp \
-    tachometerwidget.cpp
+    tachometerwidget.cpp \
+    thermometerwidget.cpp
 
 HEADERS += \
     batterywidget.h \
     levelwidget.h \
     mainwindow.h \
     sevensegmentclock.h \
-    tachometerwidget.h
+    tachometerwidget.h \
+    thermometerwidget.h
 
 FORMS += \
     mainwindow.ui

@@ -17,13 +17,18 @@ private:
     float xAngle = 0.0;
     float yAngle = 0.0;
 
+    float minAngle = -10.0;
+    float maxAngle = 10.0;
+
     void resizeEvent(QResizeEvent *event);
 
     void paintEvent(QPaintEvent *);
     QPointF getWidgetFrameOffset(QSizeF);
 
-//    void setXAngle(float);
-//    void setYAngle(float);
+public slots:
+    void setXAngle(double);
+    void setYAngle(double);
+
 signals:
 
 };
