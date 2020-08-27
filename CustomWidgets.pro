@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     batterywidget.cpp \
+    levelwidget.cpp \
     mainApp.cpp \
     mainwindow.cpp \
     sevensegmentclock.cpp \
@@ -24,6 +25,7 @@ SOURCES += \
 
 HEADERS += \
     batterywidget.h \
+    levelwidget.h \
     mainwindow.h \
     sevensegmentclock.h \
     tachometerwidget.h
