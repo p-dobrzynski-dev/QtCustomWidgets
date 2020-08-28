@@ -105,7 +105,7 @@ QList<QRectF> SevenSegmentClock::calculateRectsForSegments(){
 QList<QRectF> SevenSegmentClock::getSingleSegment(QRectF forRect, int number){
     QList <QRectF> tempRects = QList<QRectF>();
 
-    float segmentWidth = 10;
+    float segmentWidth = widgetFrame.width()/20;
 
     float segmentVHeight = (forRect.height() - 3 * segmentWidth) / 2;
 

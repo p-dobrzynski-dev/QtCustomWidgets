@@ -37,6 +37,7 @@ void LevelWidget::resizeEvent(QResizeEvent *) {
     scaleValue = 0.1;
     QSizeF levelCircleFrameSize =  QSizeF(widgetFrame.width()*scaleValue,widgetFrame.height()*scaleValue);
     levelCircleFrame.setSize(levelCircleFrameSize);
+
 }
 
 QPointF LevelWidget:: getWidgetFrameOffset(QSizeF widSize){

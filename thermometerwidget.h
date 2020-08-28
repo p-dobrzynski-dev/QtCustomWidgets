@@ -13,10 +13,18 @@ private:
 
     QRectF bottomTankRect;
     QRectF topTankRect;
+    QRectF valueRect;
+
+    double minValue = -20.0;
+    double maxValue = 60.0;
+    double value = 0.0;
 
     void paintEvent(QPaintEvent *);
     void resizeEvent(QResizeEvent *event);
     QPointF getWidgetFrameOffset(QSizeF);
+
+public slots:
+    void setValue(double);
 
 signals:
 
