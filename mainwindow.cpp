@@ -9,14 +9,7 @@ MainWindow::MainWindow(QMainWindow *parent)
 {
     ui->setupUi(this);
 
-    ui->widget_2->setValue(ui->horizontalSlider->value());
 
-    connect (ui->horizontalSlider, SIGNAL(valueChanged (int)), ui->widget, SLOT(setValue(int)));
-    connect (ui->horizontalSlider, SIGNAL(valueChanged (int)), ui->widget_2, SLOT(setValue(int)));
-    connect (ui->horizontalSlider, SIGNAL(valueChanged (int)), ui->widget_3, SLOT(setValue(int)));
-    connect (ui->doubleSpinBox , SIGNAL(valueChanged(double)), ui->widget_4, SLOT(setXAngle(double)));
-    connect (ui->doubleSpinBox_2 , SIGNAL(valueChanged(double)), ui->widget_4, SLOT(setYAngle(double)));
-    connect (ui->doubleSpinBox_3, SIGNAL(valueChanged(double)), ui->widget_5, SLOT(setValue(double)));
 }
 
 MainWindow::~MainWindow()
@@ -24,3 +17,6 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+void MainWindow::updateSevenSegment() {
+
+}

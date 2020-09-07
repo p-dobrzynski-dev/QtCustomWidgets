@@ -2,6 +2,9 @@
 
 # include <QPainter>
 # include <QDebug>
+# include <QTextDocument>
+#include <QAbstractTextDocumentLayout>
+
 
 ThermometerWidget::ThermometerWidget(QWidget *parent) : QWidget(parent)
 {
@@ -70,6 +73,7 @@ void ThermometerWidget:: paintEvent(QPaintEvent *){
 
     // Infill Path
     QPainterPath infillPath;
+
     QRectF infillRect = QRectF(topTankRect);
 
     float stepHeightValue = widgetFrame.height()/(maxValue - minValue);
@@ -98,10 +102,36 @@ void ThermometerWidget:: paintEvent(QPaintEvent *){
     painter.fillPath(path,Qt::transparent);
     painter.drawPath(path);
 
-    //Drawing 0 line
+    // Drawing thermometer value
+    QFont font = painter.font();
+    font.setPointSize(widgetFrame.height()/10);
+    QFontMetrics fm(font);
+    int textHeight = fm.height();
+    painter.setFont(font);
+    painter.drawText(QPointF(0,topTankRect.topRight().y()+textHeight), QString("%1°C").arg(QString::number(value,'f',1)));
+
+    // Drawing lines
     pen.setWidth(widgetFrame.width()/100);
     painter.setPen(pen);
-    QLineF zeroLine = QLineF(QPointF(topTankRect.center().x()-topTankRect.width()/1.5,widgetFrame.top() + maxValue*stepHeightValue),
-                             QPointF(topTankRect.center().x()+topTankRect.width()/1.5,widgetFrame.top() + maxValue*stepHeightValue));
-    painter.drawLine(zeroLine);
+
+    int numberOfLines = (maxValue - minValue) / 10;
+
+    float lineInterval = topTankRect.height()/numberOfLines;
+
+    for (int i = 1; i < numberOfLines; i++) {
+
+        if (i == 6) {
+            pen.setWidth(widgetFrame.width()/50);
+            painter.setPen(pen);
+        } else {
+            pen.setWidth(widgetFrame.width()/100);
+            painter.setPen(pen);
+        }
+        QPointF lineBegining = QPointF(topTankRect.center().x()-topTankRect.width()/1.5,widgetFrame.top() + lineInterval * i);
+        QPointF lineEnding = QPointF(topTankRect.center().x()+topTankRect.width()/1.5,widgetFrame.top() + lineInterval * i);
+        QLineF line =  QLineF(lineBegining,lineEnding);
+        painter.drawLine(line);
+        painter.drawText(QPointF(lineEnding.x()+widgetFrame.width()/20,lineEnding.y()),QString("%1").arg(maxValue - 10*i));
+    }
+
 }

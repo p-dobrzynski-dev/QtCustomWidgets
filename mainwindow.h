@@ -17,6 +17,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    void updateSevenSegment();
 
 };
 #endif // MAINWINDOW_H

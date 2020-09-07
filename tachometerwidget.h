@@ -17,7 +17,7 @@ private:
 
     int value = 0;
 
-    int maxValue = 280;
+    int maxValue = 240;
     int minValue = 0;
 
     QFont textFont = QFont();
@@ -28,7 +28,7 @@ private:
 
 public slots:
     void setValue(int);
-
+    void setMaxValue(int);
 signals:
 
 };

@@ -10,7 +10,7 @@ SevenSegmentClock::SevenSegmentClock(QWidget *parent) : QWidget(parent)
 
 void SevenSegmentClock::resizeEvent(QResizeEvent *) {
     // Making widget aspect ratio 1:1 (Square)
-    if (this->width() > this->height()){
+    if (this->width() >= this->height()){
         QSizeF widgetSize = QSizeF(this->height(),this->height());
         widgetFrame.setSize(widgetSize);
 

@@ -85,9 +85,9 @@ void LevelWidget::paintEvent(QPaintEvent *){
     //    // Delete this in the end
 //        painter.drawRect(widgetFrame);
     //    //
-
+    float outsideFrameWidth = widgetFrame.width()/35;
     pen.setColor(QColor("#4b4b4b"));
-    pen.setWidth(5);
+    pen.setWidth(outsideFrameWidth);
     painter.setPen(pen);
     QBrush brush = QBrush(QColor("#3ae374"));
     painter.setBrush(brush);
@@ -95,24 +95,27 @@ void LevelWidget::paintEvent(QPaintEvent *){
     painter.drawEllipse(widgetFrame);
 
     pen.setColor(QColor("#3d3d3d"));
-    pen.setWidth(2);
+    pen.setWidth(widgetFrame.width()/70);
     painter.setPen(pen);
-    painter.drawEllipse(outsideCircleFrame);
-    painter.drawEllipse(insideCircleFrame);
 
     brush.setColor(Qt::white);
     painter.setBrush(brush);
 
 
     // Level circle position
-    float xPosition = widgetFrame.center().x() + (xAngle/(maxAngle*2)) * widgetFrame.width();
-    float yPosition = widgetFrame.center().y() + (yAngle/(maxAngle*2)) * widgetFrame.height();
+    float xPosition = widgetFrame.center().x() + (xAngle/(maxAngle*2)) * (widgetFrame.width() - levelCircleFrame.width() - outsideFrameWidth);
+    float yPosition = widgetFrame.center().y() + (yAngle/(maxAngle*2)) * (widgetFrame.height() - levelCircleFrame.width() - outsideFrameWidth);
 
     QPointF levelCirclePosition = QPointF(xPosition,yPosition);
     levelCircleFrame.moveCenter(levelCirclePosition);
 
     painter.drawEllipse(levelCircleFrame);
 
+    brush.setColor(Qt::transparent);
+    painter.setBrush(brush);
+
+    painter.drawEllipse(outsideCircleFrame);
+    painter.drawEllipse(insideCircleFrame);
 
 
 }

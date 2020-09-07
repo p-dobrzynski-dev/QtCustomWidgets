@@ -12,7 +12,7 @@ TachometerWidget::TachometerWidget(QWidget *parent) :
 
 }
 
-void TachometerWidget:: resizeEvent(QResizeEvent *event){
+void TachometerWidget:: resizeEvent(QResizeEvent *){
 
     // Making widget aspect ratio 1:1 (Square)
     if (this->width() > this->height()){
@@ -76,6 +76,12 @@ void TachometerWidget::setValue(int newValue){
     value = newValue;
     this->update();
 }
+
+void TachometerWidget::setMaxValue(int value){
+    maxValue = value;
+    this->update();
+}
+
 
 
 void TachometerWidget:: paintEvent(QPaintEvent *){
