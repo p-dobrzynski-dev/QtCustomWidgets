@@ -17,7 +17,12 @@ public:
 
 private:
     Ui::MainWindow *ui;
-    void updateSevenSegment();
 
+private slots:
+    void updateThermometer();
+    void updateBattery();
+    void updateTachometer();
+    void updateSevenSegment();
+    void updateLevel();
 };
 #endif // MAINWINDOW_H

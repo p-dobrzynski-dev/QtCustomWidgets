@@ -3,7 +3,7 @@
 # include <QPainter>
 # include <QDebug>
 # include <QTextDocument>
-#include <QAbstractTextDocumentLayout>
+# include <QAbstractTextDocumentLayout>
 
 
 ThermometerWidget::ThermometerWidget(QWidget *parent) : QWidget(parent)
@@ -14,19 +14,7 @@ ThermometerWidget::ThermometerWidget(QWidget *parent) : QWidget(parent)
 void ThermometerWidget:: resizeEvent(QResizeEvent *){
 
     // Making widget aspect ratio 1:1 (Square)
-    if (this->width() > this->height()){
-        QSizeF widgetSize = QSizeF(this->height(),this->height());
-        widgetFrame.setSize(widgetSize);
-
-        QPointF widgetFrameOffsetPoint = getWidgetFrameOffset(widgetSize);
-        widgetFrame.moveTopLeft(widgetFrameOffsetPoint);
-    }else {
-        QSizeF widgetSize = QSizeF(this->width(),this->width());
-        widgetFrame.setSize(widgetSize);
-
-        QPointF widgetOffsetPoint = getWidgetFrameOffset(widgetSize);
-        widgetFrame.moveTopLeft(widgetOffsetPoint);
-    }
+    widgetFrame = getFrame(this->size());
 
     float scaleValue = 0.1;
     QSizeF topTankRectSize = QSizeF(widgetFrame.width()*scaleValue, widgetFrame.height());
@@ -35,13 +23,6 @@ void ThermometerWidget:: resizeEvent(QResizeEvent *){
     QPointF topTankPoint = QPointF(widgetFrame.center().x() - widgetFrame.width()*scaleValue/2, widgetFrame.top());
     topTankRect.moveTopLeft(topTankPoint);
 
-}
-
-QPointF ThermometerWidget:: getWidgetFrameOffset(QSizeF widSize){
-    float xOffset = this->width()/2-widSize.width()/2;
-    float yOffset = this->height()/2-widSize.height()/2;
-
-    return QPointF(xOffset,yOffset);
 }
 
 void ThermometerWidget::setValue(double newValue){
@@ -55,6 +36,11 @@ void ThermometerWidget::setValue(double newValue){
         return;
     }
     this->update();
+    this->repaint();
+}
+
+int ThermometerWidget::getValue() {
+    return value;
 }
 
 void ThermometerWidget:: paintEvent(QPaintEvent *){
@@ -108,7 +94,7 @@ void ThermometerWidget:: paintEvent(QPaintEvent *){
     QFontMetrics fm(font);
     int textHeight = fm.height();
     painter.setFont(font);
-    painter.drawText(QPointF(0,topTankRect.topRight().y()+textHeight), QString("%1°C").arg(QString::number(value,'f',1)));
+    painter.drawText(QPointF(widgetFrame.center().x() - widgetFrame.width()/2,topTankRect.topRight().y()+textHeight), QString("%1°C").arg(QString::number(value,'f',1)));
 
     // Drawing lines
     pen.setWidth(widgetFrame.width()/100);

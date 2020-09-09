@@ -10,31 +10,13 @@ SevenSegmentClock::SevenSegmentClock(QWidget *parent) : QWidget(parent)
 
 void SevenSegmentClock::resizeEvent(QResizeEvent *) {
     // Making widget aspect ratio 1:1 (Square)
-    if (this->width() >= this->height()){
-        QSizeF widgetSize = QSizeF(this->height(),this->height());
-        widgetFrame.setSize(widgetSize);
-
-        QPointF widgetFrameOffsetPoint = getWidgetFrameOffset(widgetSize);
-        widgetFrame.moveTopLeft(widgetFrameOffsetPoint);
-    }else {
-        QSizeF widgetSize = QSizeF(this->width(),this->width());
-        widgetFrame.setSize(widgetSize);
-
-        QPointF widgetOffsetPoint = getWidgetFrameOffset(widgetSize);
-        widgetFrame.moveTopLeft(widgetOffsetPoint);
-    }
-}
-
-QPointF SevenSegmentClock:: getWidgetFrameOffset(QSizeF widSize){
-    float xOffset = this->width()/2-widSize.width()/2;
-    float yOffset = this->height()/2-widSize.height()/2;
-
-    return QPointF(xOffset,yOffset);
+    widgetFrame = getFrame(this->size());
 }
 
 
 void SevenSegmentClock::setValue(int newValue){
-    if (0 <= newValue <= 9999) {
+    qDebug() << newValue << "WIDGET";
+    if (0 <= newValue && newValue <= 9999) {
         value = newValue;
     } else if (newValue < 0){
         value = 0;
@@ -42,6 +24,11 @@ void SevenSegmentClock::setValue(int newValue){
         value = 9999;
     }
     this->update();
+    this->repaint();
+}
+
+int SevenSegmentClock::getValue() {
+    return value;
 }
 
 void SevenSegmentClock:: paintEvent(QPaintEvent *) {
@@ -52,7 +39,6 @@ void SevenSegmentClock:: paintEvent(QPaintEvent *) {
 
     painter.setPen(pen);
     painter.setBrush(brush);
-//    painter.drawRect(widgetFrame);
 
     QList <QRectF> segmentsRects = calculateRectsForSegments();
     QList<int> digits = getListOfSingleDigitsFrom(value);
@@ -61,7 +47,6 @@ void SevenSegmentClock:: paintEvent(QPaintEvent *) {
     {
         QList <QRectF> singleSegment = getSingleSegment(segmentsRects[i], digits[i]);
         painter.setBrush(QBrush(Qt::green));
-//        painter.drawRect(segmentsRects[i]);
         painter.setBrush(QBrush(Qt::red));
         foreach(QRectF segment, singleSegment) {
             painter.drawRect(segment);
@@ -81,8 +66,6 @@ QList<int> SevenSegmentClock::getListOfSingleDigitsFrom(int number) {
 
     // Reversing list of digits
     for(int k = 0; k < (listOfDigits.size()/2); k++) listOfDigits.swap(k,listOfDigits.size()-(1+k));
-
-
     return listOfDigits;
 }
 
@@ -96,7 +79,7 @@ QList<QRectF> SevenSegmentClock::calculateRectsForSegments(){
     QList<QRectF> listOfRects = QList<QRectF>();
 
     for (int i = 0; i< 4; i++) {
-        QRectF tempRect = QRectF(QPointF((singleClockWidth+ spacing) * i, widgetFrame.topLeft().y()+singleClockHeight/2), QSize(singleClockWidth, singleClockHeight));
+        QRectF tempRect = QRectF(QPointF(widgetFrame.left() + (singleClockWidth + spacing) * i, widgetFrame.topLeft().y()+singleClockHeight/2), QSize(singleClockWidth, singleClockHeight));
         listOfRects.append(tempRect);
     }
     return listOfRects;

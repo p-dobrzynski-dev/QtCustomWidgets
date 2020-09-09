@@ -2,6 +2,8 @@
 
 # include <QPainter>
 # include <QDebug>
+# include <cmath>
+
 
 LevelWidget::LevelWidget(QWidget *parent) : QWidget(parent)
 {
@@ -10,19 +12,7 @@ LevelWidget::LevelWidget(QWidget *parent) : QWidget(parent)
 
 void LevelWidget::resizeEvent(QResizeEvent *) {
     // Making widget aspect ratio 1:1 (Square)
-    if (this->width() > this->height()){
-        QSizeF widgetSize = QSizeF(this->height(),this->height());
-        widgetFrame.setSize(widgetSize);
-
-        QPointF widgetFrameOffsetPoint = getWidgetFrameOffset(widgetSize);
-        widgetFrame.moveTopLeft(widgetFrameOffsetPoint);
-    }else {
-        QSizeF widgetSize = QSizeF(this->width(),this->width());
-        widgetFrame.setSize(widgetSize);
-
-        QPointF widgetOffsetPoint = getWidgetFrameOffset(widgetSize);
-        widgetFrame.moveTopLeft(widgetOffsetPoint);
-    }
+    widgetFrame = getFrame(this->size());
 
     float scaleValue = 0.75;
     QSizeF outsideCircleFrameSize = QSizeF(widgetFrame.width()*scaleValue,widgetFrame.height()*scaleValue);
@@ -40,13 +30,6 @@ void LevelWidget::resizeEvent(QResizeEvent *) {
 
 }
 
-QPointF LevelWidget:: getWidgetFrameOffset(QSizeF widSize){
-    float xOffset = this->width()/2-widSize.width()/2;
-    float yOffset = this->height()/2-widSize.height()/2;
-
-    return QPointF(xOffset,yOffset);
-}
-
 void LevelWidget::setXAngle(double newValue){
     if (( minAngle <= newValue) && (newValue <= maxAngle)) {
         xAngle = newValue;
@@ -58,10 +41,10 @@ void LevelWidget::setXAngle(double newValue){
         return;
     }
     this->update();
+    this->repaint();
 }
 
 void LevelWidget::setYAngle(double newValue){
-
     if (( minAngle <= newValue) && (newValue <= maxAngle)) {
         yAngle = newValue;
     } else if (newValue < minAngle){
@@ -72,6 +55,15 @@ void LevelWidget::setYAngle(double newValue){
         return;
     }
     this->update();
+    this->repaint();
+}
+
+float LevelWidget::getXAngle() {
+    return xAngle;
+}
+
+float LevelWidget::getYAngle() {
+    return yAngle;
 }
 
 
@@ -103,10 +95,17 @@ void LevelWidget::paintEvent(QPaintEvent *){
 
 
     // Level circle position
-    float xPosition = widgetFrame.center().x() + (xAngle/(maxAngle*2)) * (widgetFrame.width() - levelCircleFrame.width() - outsideFrameWidth);
-    float yPosition = widgetFrame.center().y() + (yAngle/(maxAngle*2)) * (widgetFrame.height() - levelCircleFrame.width() - outsideFrameWidth);
+    QPointF levelCirclePosition;
 
-    QPointF levelCirclePosition = QPointF(xPosition,yPosition);
+    if (xAngle == 0 && yAngle == 0) {
+        levelCirclePosition = widgetFrame.center();
+    } else {
+        double angle = atan(yAngle/xAngle);
+        float xNewPos = widgetFrame.center().x() + cos(angle)* xAngle/(maxAngle) * (widgetFrame.width() - levelCircleFrame.width() - outsideFrameWidth)/2;
+        float yNewPos = widgetFrame.center().y() + sin(angle)* yAngle/(maxAngle) * (widgetFrame.width() - levelCircleFrame.height() - outsideFrameWidth)/2;
+        levelCirclePosition = QPointF(xNewPos,yNewPos);
+    }
+
     levelCircleFrame.moveCenter(levelCirclePosition);
 
     painter.drawEllipse(levelCircleFrame);

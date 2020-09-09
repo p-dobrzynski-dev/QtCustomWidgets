@@ -2,12 +2,15 @@
 #define LEVELWIDGET_H
 
 #include <QWidget>
+#include <widgetengine.h>
 
-class LevelWidget : public QWidget
+class LevelWidget : public QWidget, public WidgetEngine
 {
     Q_OBJECT
 public:
     explicit LevelWidget(QWidget *parent = nullptr);
+    float getXAngle();
+    float getYAngle();
 private:
     QRectF widgetFrame;
     QRectF outsideCircleFrame;
@@ -23,7 +26,6 @@ private:
     void resizeEvent(QResizeEvent *event);
 
     void paintEvent(QPaintEvent *);
-    QPointF getWidgetFrameOffset(QSizeF);
 
 public slots:
     void setXAngle(double);

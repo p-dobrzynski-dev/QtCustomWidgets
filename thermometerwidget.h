@@ -2,12 +2,14 @@
 #define THERMOMETERWIDGET_H
 
 #include <QWidget>
+#include <widgetengine.h>
 
-class ThermometerWidget : public QWidget
+class ThermometerWidget : public QWidget, public WidgetEngine
 {
     Q_OBJECT
 public:
     explicit ThermometerWidget(QWidget *parent = nullptr);
+    int getValue();
 private:
     QRectF widgetFrame;
 
@@ -21,7 +23,6 @@ private:
 
     void paintEvent(QPaintEvent *);
     void resizeEvent(QResizeEvent *event);
-    QPointF getWidgetFrameOffset(QSizeF);
 
 public slots:
     void setValue(double);

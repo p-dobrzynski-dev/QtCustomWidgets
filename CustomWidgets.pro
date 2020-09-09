@@ -22,7 +22,8 @@ SOURCES += \
     mainwindow.cpp \
     sevensegmentclock.cpp \
     tachometerwidget.cpp \
-    thermometerwidget.cpp
+    thermometerwidget.cpp \
+    widgetengine.cpp
 
 HEADERS += \
     batterywidget.h \
@@ -30,7 +31,8 @@ HEADERS += \
     mainwindow.h \
     sevensegmentclock.h \
     tachometerwidget.h \
-    thermometerwidget.h
+    thermometerwidget.h \
+    widgetengine.h
 
 FORMS += \
     mainwindow.ui

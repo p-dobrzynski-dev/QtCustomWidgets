@@ -15,26 +15,14 @@ TachometerWidget::TachometerWidget(QWidget *parent) :
 void TachometerWidget:: resizeEvent(QResizeEvent *){
 
     // Making widget aspect ratio 1:1 (Square)
-    if (this->width() > this->height()){
-        QSizeF widgetSize = QSizeF(this->height(),this->height());
-        widgetFrame.setSize(widgetSize);
-
-        QPointF widgetFrameOffsetPoint = getWidgetFrameOffset(widgetSize);
-        widgetFrame.moveTopLeft(widgetFrameOffsetPoint);
-    }else {
-        QSizeF widgetSize = QSizeF(this->width(),this->width());
-        widgetFrame.setSize(widgetSize);
-
-        QPointF widgetOffsetPoint = getWidgetFrameOffset(widgetSize);
-        widgetFrame.moveTopLeft(widgetOffsetPoint);
-    }
+    widgetFrame = getFrame(this->size());
 
     //Setting inner arc rect
     float scaleValue = 0.85;
     QSizeF innerArcSize = QSizeF(widgetFrame.width()*scaleValue,widgetFrame.height()*scaleValue);
     innerArcFrame.setSize(innerArcSize);
 
-    QPointF innerArcOffsetPoint = getWidgetFrameOffset(innerArcSize);
+    QPointF innerArcOffsetPoint = getWidgetFrameOffset(this->size(), innerArcSize);
     innerArcFrame.moveTopLeft(innerArcOffsetPoint);
 
     //Setting tip circle rect
@@ -42,7 +30,7 @@ void TachometerWidget:: resizeEvent(QResizeEvent *){
     QSizeF tipCircleSize = QSizeF(widgetFrame.width()*scaleValue,widgetFrame.height()*scaleValue);
     tipCircleFrame.setSize(tipCircleSize);
 
-    QPointF tipCircleOffsetPoint = getWidgetFrameOffset(tipCircleSize);
+    QPointF tipCircleOffsetPoint = getWidgetFrameOffset(this->size(), tipCircleSize);
     tipCircleFrame.moveTopLeft(tipCircleOffsetPoint);
 
     //Setting tip rect
@@ -52,19 +40,8 @@ void TachometerWidget:: resizeEvent(QResizeEvent *){
 
     QPointF tipOffsetPoint = QPointF(-tipSize.width()/2,-tipSize.height());
     tipFrame.moveTopLeft(tipOffsetPoint);
-
-//    QPointF tipCircleOffsetPoint = getWidgetFrameOffset(tipCircleSize);
-//    tipCircleFrame.moveTopLeft(tipCircleOffsetPoint);
-
-
 }
 
-QPointF TachometerWidget:: getWidgetFrameOffset(QSizeF widSize){
-    float xOffset = this->width()/2-widSize.width()/2;
-    float yOffset = this->height()/2-widSize.height()/2;
-
-    return QPointF(xOffset,yOffset);
-}
 
 
 float getRadians(float Degrees){
@@ -73,16 +50,31 @@ float getRadians(float Degrees){
 }
 
 void TachometerWidget::setValue(int newValue){
-    value = newValue;
+    if (newValue >= maxValue) {
+        value = maxValue;
+    } else if (newValue <= minValue) {
+        value = minValue;
+    }
+    else {
+        value = newValue;
+    }
     this->update();
+    this->repaint();
 }
 
 void TachometerWidget::setMaxValue(int value){
     maxValue = value;
     this->update();
+    this->repaint();
 }
 
+int TachometerWidget::getValue() {
+    return value;
+}
 
+int TachometerWidget::getMaxValue() {
+    return maxValue;
+}
 
 void TachometerWidget:: paintEvent(QPaintEvent *){
 
@@ -99,6 +91,7 @@ void TachometerWidget:: paintEvent(QPaintEvent *){
 
         //Drawing main circle
         float outPenWidth = widgetFrame.width()/50;
+
         pen.setWidthF(outPenWidth);
         pen.setColor(Qt::gray);
         painter.setPen(pen);
@@ -174,8 +167,6 @@ void TachometerWidget:: paintEvent(QPaintEvent *){
                 pen.setColor(Qt::gray);
                 painter.setPen(pen);
                 painter.drawLine(QLineF(QPointF(xBeginCoord,yBeginCoord),endCoord));
-
-
             }else {
                 xBeginCoord = innerArcFrame.center().x() + cos(radAngle) * innerArcFrame.width()/2.3;
                 yBeginCoord = innerArcFrame.center().y() + sin(radAngle) * innerArcFrame.width()/2.3;

@@ -12,19 +12,10 @@ BatteryWidget::BatteryWidget(QWidget *parent) :
 void BatteryWidget::resizeEvent(QResizeEvent *)
 {
     // Making widget aspect ratio 2:1 (Rectangle)
-    if (this->width() > this->height()){
-        QSizeF widgetSize = QSizeF(this->height(),this->height()/2);
-        widgetFrame.setSize(widgetSize);
+    widgetFrame = getFrame(this->size());
 
-        QPointF widgetFrameOffsetPoint = getWidgetFrameOffset(widgetSize);
-        widgetFrame.moveTopLeft(widgetFrameOffsetPoint);
-    }else {
-        QSizeF widgetSize = QSizeF(this->width(),this->width()/2);
-        widgetFrame.setSize(widgetSize);
-
-        QPointF widgetOffsetPoint = getWidgetFrameOffset(widgetSize);
-        widgetFrame.moveTopLeft(widgetOffsetPoint);
-    }
+    widgetFrame.setSize(QSize(widgetFrame.width(),widgetFrame.height()/2));
+    widgetFrame.moveTop(widgetFrame.center().y());
 
     float scaleValue = 0.95;
     QSizeF mainBatteryFrameSize = QSizeF(widgetFrame.width()*scaleValue,widgetFrame.height());
@@ -47,14 +38,6 @@ void BatteryWidget::resizeEvent(QResizeEvent *)
     batteryLevelFrame.moveTopLeft(batteryFramePoint);
 }
 
-QPointF BatteryWidget:: getWidgetFrameOffset(QSizeF widSize){
-    float xOffset = this->width()/2-widSize.width()/2;
-    float yOffset = this->height()/2-widSize.height()/2;
-
-    return QPointF(xOffset,yOffset);
-}
-
-
 void BatteryWidget::setValue(int newValue){
     if (newValue >= maxValue){
         value = maxValue;
@@ -66,6 +49,11 @@ void BatteryWidget::setValue(int newValue){
         value = newValue;
     }
     this->update();
+    this->repaint();
+}
+
+int BatteryWidget::getValue() {
+    return value;
 }
 
 void BatteryWidget::paintEvent(QPaintEvent *)
@@ -97,13 +85,6 @@ void BatteryWidget::paintEvent(QPaintEvent *)
     pen.setWidth(widgetFrame.width()/75);
     painter.setPen(pen);
     painter.drawPath(FramePath);
-
-//    // Delete this in the end
-//    pen.setColor(Qt::red);
-//    pen.setWidth(1);
-//    painter.setPen(pen);
-//    painter.drawRect(batteryLevelFrame);
-//    //
 
     painter.setBrush(QBrush(QColor("#44bd32")));
     painter.setPen(Qt::NoPen);

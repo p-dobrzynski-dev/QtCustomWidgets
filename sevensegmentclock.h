@@ -2,17 +2,18 @@
 #define SEVENSEGMENTCLOCK_H
 
 #include <QWidget>
+#include <widgetengine.h>
 
-class SevenSegmentClock : public QWidget
+class SevenSegmentClock : public QWidget, public WidgetEngine
 {
     Q_OBJECT
 public:
     explicit SevenSegmentClock(QWidget *parent = nullptr);
+    int getValue();
 private:
     QRectF widgetFrame;
     void paintEvent(QPaintEvent *);
     void resizeEvent(QResizeEvent *event);
-    QPointF getWidgetFrameOffset(QSizeF);
 
     int value = 0;
 

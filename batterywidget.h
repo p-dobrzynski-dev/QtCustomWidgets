@@ -2,13 +2,14 @@
 #define BATTERYWIDGET_H
 
 #include <QWidget>
+#include <widgetengine.h>
 
-class BatteryWidget : public QWidget
+class BatteryWidget : public QWidget, public WidgetEngine
 {
     Q_OBJECT
 public:
     explicit BatteryWidget(QWidget *parent = nullptr);
-
+    int getValue();
 private:
 
     QRectF widgetFrame;
@@ -25,7 +26,6 @@ private:
 
     void resizeEvent(QResizeEvent *event);
     void paintEvent(QPaintEvent *event);
-    QPointF getWidgetFrameOffset(QSizeF);
 
 public slots:
     void setValue(int);
