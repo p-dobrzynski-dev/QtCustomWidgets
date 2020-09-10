@@ -4,13 +4,11 @@
 #include <QWidget>
 #include <widgetengine.h>
 
-class TachometerWidget : public QWidget, public WidgetEngine
+class TachometerWidget :public WidgetEngine
 {
     Q_OBJECT
 public:
-    explicit TachometerWidget(QWidget *parent = nullptr);
-    int getValue();
-    int getMaxValue();
+    TachometerWidget(QWidget *parent = nullptr);
 private:
 
     QRectF widgetFrame;
@@ -18,21 +16,9 @@ private:
     QRectF tipCircleFrame;
     QRectF tipFrame;
 
-    int value = 0;
-
-    int maxValue = 280;
-    int minValue = 0;
-
-    QFont textFont = QFont();
-
-    void paintEvent(QPaintEvent *);
-    void resizeEvent(QResizeEvent *);
-
-public slots:
-    void setValue(int);
-    void setMaxValue(int);
-signals:
-
+    void resizeEvent(QResizeEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
+    void validateValue(float newValue) override;
 };
 
 #endif // TACHOMETERWIDGET_H

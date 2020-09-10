@@ -5,14 +5,13 @@
 # include <cmath>
 
 
-LevelWidget::LevelWidget(QWidget *parent) : QWidget(parent)
+LevelWidget::LevelWidget(QWidget *)
 {
-
 }
 
 void LevelWidget::resizeEvent(QResizeEvent *) {
     // Making widget aspect ratio 1:1 (Square)
-    widgetFrame = getFrame(this->size());
+    widgetFrame = getFrame();
 
     float scaleValue = 0.75;
     QSizeF outsideCircleFrameSize = QSizeF(widgetFrame.width()*scaleValue,widgetFrame.height()*scaleValue);
@@ -66,7 +65,6 @@ float LevelWidget::getYAngle() {
     return yAngle;
 }
 
-
 void LevelWidget::paintEvent(QPaintEvent *){
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing);
@@ -74,9 +72,6 @@ void LevelWidget::paintEvent(QPaintEvent *){
 
     painter.setPen(pen);
 
-    //    // Delete this in the end
-//        painter.drawRect(widgetFrame);
-    //    //
     float outsideFrameWidth = widgetFrame.width()/35;
     pen.setColor(QColor("#4b4b4b"));
     pen.setWidth(outsideFrameWidth);

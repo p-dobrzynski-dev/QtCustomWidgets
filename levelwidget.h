@@ -4,13 +4,15 @@
 #include <QWidget>
 #include <widgetengine.h>
 
-class LevelWidget : public QWidget, public WidgetEngine
+class LevelWidget :public WidgetEngine
 {
     Q_OBJECT
 public:
-    explicit LevelWidget(QWidget *parent = nullptr);
+    LevelWidget(QWidget *parent = nullptr);
     float getXAngle();
     float getYAngle();
+    void setXAngle(double);
+    void setYAngle(double);
 private:
     QRectF widgetFrame;
     QRectF outsideCircleFrame;
@@ -23,16 +25,11 @@ private:
     float minAngle = -10.0;
     float maxAngle = 10.0;
 
-    void resizeEvent(QResizeEvent *event);
+    void resizeEvent(QResizeEvent *event) override;
+    void paintEvent(QPaintEvent *) override;
 
-    void paintEvent(QPaintEvent *);
-
-public slots:
-    void setXAngle(double);
-    void setYAngle(double);
-
-signals:
-
+protected:
+    using WidgetEngine::setValue;
 };
 
 #endif // LEVELWIDGET_H

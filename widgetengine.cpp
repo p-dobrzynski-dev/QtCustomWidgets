@@ -1,34 +1,60 @@
 #include "widgetengine.h"
+#include <QDebug>
 
-WidgetEngine::WidgetEngine()
+
+WidgetEngine::WidgetEngine(QWidget *parent) :
+    QWidget(parent)
 {
 
 }
 
-QRectF WidgetEngine::getFrame(QSize widgetSize) {
+QRectF WidgetEngine::getFrame() {
     QRectF frame = QRectF();
     QSizeF newWidgetSize;
     // Making widget aspect ratio 1:1 (Square)
-    if (widgetSize.width() > widgetSize.height()){
-        newWidgetSize = QSizeF(widgetSize.height()*0.95,widgetSize.height()*0.95);
+    if (this->width() > this->height()){
+        newWidgetSize = QSizeF(this->height()*0.95,this->height()*0.95);
         frame.setSize(newWidgetSize);
 
-        QPointF widgetFrameOffsetPoint = getWidgetFrameOffset(widgetSize, newWidgetSize);
+        QPointF widgetFrameOffsetPoint = getWidgetFrameOffset(newWidgetSize);
         frame.moveTopLeft(widgetFrameOffsetPoint);
     }else {
-        newWidgetSize = QSizeF(widgetSize.width()*0.95,widgetSize.width() * 0.95);
+        newWidgetSize = QSizeF(this->width()*0.95,this->width() * 0.95);
         frame.setSize(newWidgetSize);
 
-        QPointF widgetOffsetPoint = getWidgetFrameOffset(widgetSize, newWidgetSize);
+        QPointF widgetOffsetPoint = getWidgetFrameOffset(newWidgetSize);
         frame.moveTopLeft(widgetOffsetPoint);
     }
-
     return frame;
 }
 
-QPointF WidgetEngine::getWidgetFrameOffset(QSize widgetSize, QSizeF newWidgetSize){
-    float xOffset = widgetSize.width()/2-newWidgetSize.width()/2;
-    float yOffset = widgetSize.height()/2-newWidgetSize.height()/2;
+QPointF WidgetEngine::getWidgetFrameOffset(QSizeF newWidgetSize){
+    float xOffset = this->width()/2-newWidgetSize.width()/2;
+    float yOffset = this->height()/2-newWidgetSize.height()/2;
 
     return QPointF(xOffset,yOffset);
+}
+
+void WidgetEngine::validateValue(float newValue) {
+    value = newValue;
+}
+
+void WidgetEngine::setValue(float newValue) {
+    validateValue(newValue);
+    this->update();
+    this->repaint();
+}
+
+float WidgetEngine::getValue() {
+    return value;
+}
+
+void WidgetEngine::setMaxValue(float newMaxValue){
+    maxValue = newMaxValue;
+    this->update();
+    this->repaint();
+}
+
+float WidgetEngine::getMaxValue() {
+    return maxValue;
 }

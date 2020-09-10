@@ -242,27 +242,6 @@
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_7">
-               <property name="text">
-                <string>Unit</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QComboBox" name="comboBox">
-               <item>
-                <property name="text">
-                 <string>KM/H</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>MPH</string>
-                </property>
-               </item>
-              </widget>
-             </item>
-             <item>
               <widget class="QLabel" name="label_3">
                <property name="text">
                 <string>Value</string>
@@ -428,6 +407,13 @@
                  <width>100</width>
                  <height>16777215</height>
                 </size>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QCheckBox" name="isChargingBatteryCheckBox">
+               <property name="text">
+                <string>Is charging</string>
                </property>
               </widget>
              </item>

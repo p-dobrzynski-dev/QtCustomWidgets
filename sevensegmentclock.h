@@ -4,28 +4,20 @@
 #include <QWidget>
 #include <widgetengine.h>
 
-class SevenSegmentClock : public QWidget, public WidgetEngine
+class SevenSegmentClock : public WidgetEngine
 {
     Q_OBJECT
 public:
-    explicit SevenSegmentClock(QWidget *parent = nullptr);
-    int getValue();
+    SevenSegmentClock(QWidget *parent = nullptr);
 private:
     QRectF widgetFrame;
-    void paintEvent(QPaintEvent *);
-    void resizeEvent(QResizeEvent *event);
-
-    int value = 0;
+    void paintEvent(QPaintEvent *) override;
+    void resizeEvent(QResizeEvent *event) override;
+    void validateValue(float newValue) override;
 
     QList<QRectF> getSingleSegment(QRectF forRect, int number);
     QList<QRectF> calculateRectsForSegments();
     QList<int> getListOfSingleDigitsFrom(int number);
-
-public slots:
-    void setValue(int);
-
-signals:
-
 };
 
 #endif // SEVENSEGMENTCLOCK_H

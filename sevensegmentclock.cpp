@@ -3,32 +3,23 @@
 #include <QPainter>
 #include <QDebug>
 
-SevenSegmentClock::SevenSegmentClock(QWidget *parent) : QWidget(parent)
-{
-
+SevenSegmentClock::SevenSegmentClock(QWidget *){
+    maxValue = 9999;
 }
 
 void SevenSegmentClock::resizeEvent(QResizeEvent *) {
     // Making widget aspect ratio 1:1 (Square)
-    widgetFrame = getFrame(this->size());
+    widgetFrame = getFrame();
 }
 
-
-void SevenSegmentClock::setValue(int newValue){
-    qDebug() << newValue << "WIDGET";
-    if (0 <= newValue && newValue <= 9999) {
+void SevenSegmentClock::validateValue(float newValue) {
+    if (minValue <= newValue && newValue <= maxValue) {
         value = newValue;
-    } else if (newValue < 0){
-        value = 0;
-    } else if (newValue > 9999) {
-        value = 9999;
+    } else if (newValue < minValue){
+        value = minValue;
+    } else if (newValue > maxValue) {
+        value = maxValue;
     }
-    this->update();
-    this->repaint();
-}
-
-int SevenSegmentClock::getValue() {
-    return value;
 }
 
 void SevenSegmentClock:: paintEvent(QPaintEvent *) {
@@ -65,7 +56,7 @@ QList<int> SevenSegmentClock::getListOfSingleDigitsFrom(int number) {
     }
 
     // Reversing list of digits
-    for(int k = 0; k < (listOfDigits.size()/2); k++) listOfDigits.swap(k,listOfDigits.size()-(1+k));
+    for(int k = 0; k < (listOfDigits.size()/2); k++) listOfDigits.swapItemsAt(k,listOfDigits.size()-(1+k));
     return listOfDigits;
 }
 
@@ -171,7 +162,6 @@ QList<QRectF> SevenSegmentClock::getSingleSegment(QRectF forRect, int number){
         tempRects.append(GSegment);
         break;
     default:
-        //jakiś kod
         break;
     }
 

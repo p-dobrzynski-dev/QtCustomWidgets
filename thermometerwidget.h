@@ -4,31 +4,18 @@
 #include <QWidget>
 #include <widgetengine.h>
 
-class ThermometerWidget : public QWidget, public WidgetEngine
+class ThermometerWidget : public WidgetEngine
 {
     Q_OBJECT
 public:
-    explicit ThermometerWidget(QWidget *parent = nullptr);
-    int getValue();
+    ThermometerWidget(QWidget *parent = nullptr);
 private:
     QRectF widgetFrame;
+    QRectF tankRect;
 
-    QRectF bottomTankRect;
-    QRectF topTankRect;
-    QRectF valueRect;
-
-    double minValue = -20.0;
-    double maxValue = 60.0;
-    double value = 0.0;
-
-    void paintEvent(QPaintEvent *);
-    void resizeEvent(QResizeEvent *event);
-
-public slots:
-    void setValue(double);
-
-signals:
-
+    void paintEvent(QPaintEvent *) override;
+    void resizeEvent(QResizeEvent *event) override;
+    void validateValue(float newValue) override;
 };
 
 #endif // THERMOMETERWIDGET_H

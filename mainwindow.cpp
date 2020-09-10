@@ -15,6 +15,11 @@ MainWindow::MainWindow(QMainWindow *parent)
 
     // Battery widget
     ui->BatteryLineEdit->setText(QString::number(ui->Battery->getValue()));
+    if (ui->Battery->getChargingState()) {
+        ui->isChargingBatteryCheckBox->setCheckState(Qt::Checked);
+    } else {
+        ui->isChargingBatteryCheckBox->setCheckState(Qt::Unchecked);
+    }
     connect(ui->updateBatteryButton, SIGNAL (clicked()),this, SLOT (updateBattery()));
 
     // Tachometer widget
@@ -47,6 +52,12 @@ void MainWindow::updateBattery(){
     QString value = ui->BatteryLineEdit->text();
     int intValue = value.toInt();
     ui->Battery->setValue(intValue);
+
+    if (ui->isChargingBatteryCheckBox->isChecked()) {
+        ui->Battery->setChargingState(true);
+    } else {
+        ui->Battery->setChargingState(false);
+    }
 }
 
 void MainWindow::updateTachometer(){
@@ -54,9 +65,9 @@ void MainWindow::updateTachometer(){
     int intValue = value.toInt();
     ui->tachometer->setValue(intValue);
 
-//    QString maxValue = ui->tachometerMaxValueLineEdit->text();
-//    int intMaxValue = maxValue.toInt();
-//    ui->tachometer->setMaxValue(intMaxValue);
+    QString maxValue = ui->tachometerMaxValueLineEdit->text();
+    int intMaxValue = maxValue.toInt();
+    ui->tachometer->setMaxValue(intMaxValue);
 }
 
 void MainWindow::updateSevenSegment() {

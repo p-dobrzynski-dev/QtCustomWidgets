@@ -4,12 +4,13 @@
 #include <QWidget>
 #include <widgetengine.h>
 
-class BatteryWidget : public QWidget, public WidgetEngine
+class BatteryWidget: public WidgetEngine
 {
     Q_OBJECT
 public:
-    explicit BatteryWidget(QWidget *parent = nullptr);
-    int getValue();
+    BatteryWidget(QWidget *parent = nullptr);
+    bool getChargingState();
+    void setChargingState(bool state);
 private:
 
     QRectF widgetFrame;
@@ -17,21 +18,11 @@ private:
     QRectF tipBatteryFrame;
     QRectF batteryLevelFrame;
 
-    int value = 0;
+    bool isCharging = false;
 
-    int maxValue = 100;
-    int minValue = 0;
-
-    QFont textFont = QFont();
-
-    void resizeEvent(QResizeEvent *event);
-    void paintEvent(QPaintEvent *event);
-
-public slots:
-    void setValue(int);
-
-signals:
-
+    void resizeEvent(QResizeEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
+    void validateValue(float newValue) override;
 };
 
 #endif // BATTERYWIDGET_H
