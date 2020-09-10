@@ -10,7 +10,7 @@ Such as:
 * Seven Segment Clock
 * Level Widget
 
-<img src="/GITImages/MainWindow.png" width="500"/>
+<img src="/GITImages/MainWindow.png" width="700"/>
 
 
 
