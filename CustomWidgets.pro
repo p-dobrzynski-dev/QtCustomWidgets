@@ -17,14 +17,22 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     batterywidget.cpp \
+    levelwidget.cpp \
     mainApp.cpp \
     mainwindow.cpp \
-    tachometerwidget.cpp
+    sevensegmentclock.cpp \
+    tachometerwidget.cpp \
+    thermometerwidget.cpp \
+    widgetengine.cpp
 
 HEADERS += \
     batterywidget.h \
+    levelwidget.h \
     mainwindow.h \
-    tachometerwidget.h
+    sevensegmentclock.h \
+    tachometerwidget.h \
+    thermometerwidget.h \
+    widgetengine.h
 
 FORMS += \
     mainwindow.ui
@@ -33,3 +41,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    images.qrc

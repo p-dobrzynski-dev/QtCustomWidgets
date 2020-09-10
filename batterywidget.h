@@ -2,13 +2,15 @@
 #define BATTERYWIDGET_H
 
 #include <QWidget>
+#include <widgetengine.h>
 
-class BatteryWidget : public QWidget
+class BatteryWidget: public WidgetEngine
 {
     Q_OBJECT
 public:
-    explicit BatteryWidget(QWidget *parent = nullptr);
-
+    BatteryWidget(QWidget *parent = nullptr);
+    bool getChargingState();
+    void setChargingState(bool state);
 private:
 
     QRectF widgetFrame;
@@ -16,22 +18,11 @@ private:
     QRectF tipBatteryFrame;
     QRectF batteryLevelFrame;
 
-    int value = 0;
+    bool isCharging = false;
 
-    int maxValue = 100;
-    int minValue = 0;
-
-    QFont textFont = QFont();
-
-    void resizeEvent(QResizeEvent *event);
-    void paintEvent(QPaintEvent *event);
-    QPointF getWidgetFrameOffset(QSizeF);
-
-public slots:
-    void setValue(int);
-
-signals:
-
+    void resizeEvent(QResizeEvent *event) override;
+    void paintEvent(QPaintEvent *event) override;
+    void validateValue(float newValue) override;
 };
 
 #endif // BATTERYWIDGET_H

@@ -3,28 +3,18 @@
 #include <QPainter>
 #include <QDebug>
 
-BatteryWidget::BatteryWidget(QWidget *parent) :
-    QWidget(parent)
+BatteryWidget::BatteryWidget(QWidget *)
 {
-
+    maxValue = 100;
 }
 
 void BatteryWidget::resizeEvent(QResizeEvent *)
 {
     // Making widget aspect ratio 2:1 (Rectangle)
-    if (this->width() > this->height()){
-        QSizeF widgetSize = QSizeF(this->height(),this->height()/2);
-        widgetFrame.setSize(widgetSize);
+    widgetFrame = getFrame();
 
-        QPointF widgetFrameOffsetPoint = getWidgetFrameOffset(widgetSize);
-        widgetFrame.moveTopLeft(widgetFrameOffsetPoint);
-    }else {
-        QSizeF widgetSize = QSizeF(this->width(),this->width()/2);
-        widgetFrame.setSize(widgetSize);
-
-        QPointF widgetOffsetPoint = getWidgetFrameOffset(widgetSize);
-        widgetFrame.moveTopLeft(widgetOffsetPoint);
-    }
+    widgetFrame.setSize(QSize(widgetFrame.width(),widgetFrame.height()/2));
+    widgetFrame.moveTop(widgetFrame.center().y());
 
     float scaleValue = 0.95;
     QSizeF mainBatteryFrameSize = QSizeF(widgetFrame.width()*scaleValue,widgetFrame.height());
@@ -47,42 +37,39 @@ void BatteryWidget::resizeEvent(QResizeEvent *)
     batteryLevelFrame.moveTopLeft(batteryFramePoint);
 }
 
-QPointF BatteryWidget:: getWidgetFrameOffset(QSizeF widSize){
-    float xOffset = this->width()/2-widSize.width()/2;
-    float yOffset = this->height()/2-widSize.height()/2;
-
-    return QPointF(xOffset,yOffset);
+void BatteryWidget::validateValue(float newValue) {
+    if ((newValue >= minValue) && (newValue <=maxValue)){
+        value = newValue;
+    } else if (newValue < minValue) {
+        value = minValue;
+    } else if (newValue > maxValue) {
+        value = maxValue;
+    } else {
+        return;
+    }
 }
 
 
-void BatteryWidget::setValue(int newValue){
-    if (newValue >= maxValue){
-        value = maxValue;
-    }
-    else if (newValue <= minValue) {
-        value = minValue;
-    }
-    else{
-        value = newValue;
-    }
+void BatteryWidget::setChargingState(bool state) {
+    isCharging = state;
     this->update();
+    this->repaint();
+}
+
+bool BatteryWidget::getChargingState() {
+    return isCharging;
 }
 
 void BatteryWidget::paintEvent(QPaintEvent *)
 {
 
     QPainter painter(this);
-    painter.setRenderHint(QPainter::Antialiasing);
+    painter.setRenderHint( QPainter::Antialiasing, true);
+    painter.setRenderHint( QPainter::HighQualityAntialiasing, true);
     QPen pen = QPen(Qt::red);
     QBrush brush = QBrush(Qt::white);
 
     painter.setPen(pen);
-
-//    // Delete this in the end
-//    painter.drawRect(widgetFrame);
-//    //
-
-
     //Drawing battery frame
 
     float widgetCorner = widgetFrame.height()/15;
@@ -98,13 +85,6 @@ void BatteryWidget::paintEvent(QPaintEvent *)
     painter.setPen(pen);
     painter.drawPath(FramePath);
 
-//    // Delete this in the end
-//    pen.setColor(Qt::red);
-//    pen.setWidth(1);
-//    painter.setPen(pen);
-//    painter.drawRect(batteryLevelFrame);
-//    //
-
     painter.setBrush(QBrush(QColor("#44bd32")));
     painter.setPen(Qt::NoPen);
     QRectF batteryLevelRect = QRectF();
@@ -115,6 +95,7 @@ void BatteryWidget::paintEvent(QPaintEvent *)
 
     pen.setColor(Qt::white);
     painter.setPen(pen);
+    QFont textFont = QFont();
     textFont.setPixelSize(widgetFrame.height()/3);
     painter.setFont(textFont);
     QFontMetricsF fm(textFont);
@@ -123,6 +104,12 @@ void BatteryWidget::paintEvent(QPaintEvent *)
     float textHeight = fm.height();
 
     QPointF textPosition = QPointF(widgetFrame.center().x()-textWidth/2,widgetFrame.center().y()+textHeight/3);
-
     painter.drawText(textPosition, percentageLevelString);
+
+    float chargerSize = widgetFrame.height() / 2;
+
+    if (isCharging) {
+        QPixmap pixmap(":/img/charge.png");
+        painter.drawPixmap(widgetFrame.center().x() - chargerSize*1.5, widgetFrame.top() + chargerSize/2 ,chargerSize,chargerSize,pixmap);
     }
+}
