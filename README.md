@@ -11,6 +11,3 @@ Such as:
 * Level Widget
 
 <img src="/GITImages/MainWindow.png" width="700"/>
-
-
-
