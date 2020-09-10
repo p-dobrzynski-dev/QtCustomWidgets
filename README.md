@@ -6,12 +6,11 @@ Such as:
 
 * Tachometer
 * Battery percentage
+* Thermometer
+* Seven Segment Clock
+* Level Widget
 
-<img src="/gifs/capture.gif" width="100"/>
-
-## Tachometer
-
-## Battery
+<img src="/GITImages/MainWindow.png" width="100"/>
 
 
 
